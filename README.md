@@ -10,7 +10,7 @@ Everything you need to understand the design and rebuild it yourself is right he
 
 > Yellow = Core entities | Green = Associative / junction entities
 
-![Nike ERD](images/nike_erd.png) <!-- Put your diagram in /images and match the filename -->
+![Nike ERD](Screenshot 2025-06-05 204957.png) 
 
 ---
 
