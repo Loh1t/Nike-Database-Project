@@ -10,7 +10,7 @@ Everything you need to understand the design and rebuild it yourself is right he
 
 > Yellow = Core entities | Green = Associative / junction entities
 
-(![Nike ERD](images/Screenshot%202025-06-05%20204957.png))
+![Nike ERD](images/Screenshot%202025-06-05%20204957.png)
 
 ---
 
