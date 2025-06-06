@@ -1,125 +1,86 @@
-# 👟 Nike Shoe Sales Database Project
+# 👟 Nike Shoe Sales Database  
 
-This project is a relational database model simulating the end-to-end process of Nike shoe sales, from product sourcing to customer delivery. The database was created using **DBeaver**, a graphical database management tool, and includes all key business entities like suppliers, inventory, customers, orders, and shipments.
-
----
-
-## 📌 Project Objective
-
-The main goal of this project is to design and build a database that helps manage and track:
-- Product inventory across warehouses
-- Supplier-product relationships
-- Customer orders and payment flows
-- Shipment and delivery status
-
-It reflects a real-world retail database structure used by e-commerce and logistics-driven companies like Nike.
+A hands-on relational-database project that tracks the complete life-cycle of Nike shoe sales, from sourcing products all the way to delivery at a customer’s door.  
+The model was **first sketched in Lucidchart** (to nail down the relationships) and then **built table-by-table in DBeaver**.  
+Everything you need to understand the design and rebuild it yourself is right here in this README.
 
 ---
 
-## 🧱 Database Structure
+## 🗂️ Entity-Relationship Diagram (ERD)
 
-The project contains 9 core tables, each serving a specific purpose in the sales pipeline:
+> Yellow = Core entities | Green = Associative / junction entities
 
-### 1. **Warehouse**
-Stores information about each warehouse where products are stocked.
-- Key fields: Warehouse ID, Name, Location, Capacity
-
-### 2. **Inventory**
-Tracks available quantity of each product at each warehouse.
-- Key fields: Inventory ID, Product ID, Warehouse ID, Stock Quantity
-
-### 3. **Products**
-Represents Nike shoe models with details like name, color, size, and price.
-- Key fields: Product ID, Name, Category, Price, Supplier ID
-
-### 4. **Supplier**
-Contains data about companies or manufacturers supplying products.
-- Key fields: Supplier ID, Name, Contact Info, Country
-
-### 5. **Order Info**
-Provides metadata about each order like order date and current status.
-- Key fields: OrderInfo ID, Customer ID, Order Date, Status
-
-### 6. **Orders**
-Links specific products to specific orders.
-- Key fields: Order ID, OrderInfo ID, Product ID, Quantity
-
-### 7. **Customers**
-Contains customer profiles for placing and tracking orders.
-- Key fields: Customer ID, Name, Email, Address, Phone Number
-
-### 8. **Payments**
-Tracks financial transactions related to each order.
-- Key fields: Payment ID, OrderInfo ID, Payment Method, Amount, Payment Date
-
-### 9. **Shipment**
-Handles delivery information and shipping status.
-- Key fields: Shipment ID, OrderInfo ID, Carrier, Shipping Date, Delivery Status
+![Nike ERD](images/nike_erd.png) <!-- Put your diagram in /images and match the filename -->
 
 ---
 
-## 🔄 How It Works (Workflow)
+## 🧱 Table-by-Table Breakdown
 
-1. **Suppliers** deliver **Products** to **Warehouses**, where they are tracked in **Inventory**.
-2. **Customers** place **Orders**, which are tied to multiple **Products** via **Order Info**.
-3. Once an order is confirmed, a **Payment** is processed.
-4. The order is prepared for **Shipment** and delivered to the customer.
+| # | Table | Purpose | Selected Columns* |
+|---|-------|---------|-------------------|
+| 1 | **Supplier** | Who ships products to Nike | `Supplier_Id` (PK), `Name`, `Contact_Information`, `Address` |
+| 2 | **Product** | Every Nike shoe we sell | `Product_Id` (PK), `Supplier_Id` (FK), `Name`, `Description`, `Price`, `Size`, `Color`, `Category` |
+| 3 | **Warehouse** | Where stock physically lives | `Warehouse_Id` (PK), `Name`, `Capacity`, `Location`, `Contact_Information` |
+| 4 | **Inventory** | Current stock holdings (junction of Product × Warehouse) | `Inventory_Id` (PK), `Warehouse_Id` (FK), `Product_Id` (FK), `Date_received`, `Date_shipped` |
+| 5 | **Customer** | Buyers of our shoes | `Customer_Id` (PK), `Name`, `Email`, `Phone`, `Shipping_address`, `Payment_Id`† |
+| 6 | **Order** | Each checkout event | `Order_Id` (PK), `Customer_Id` (FK), `Order_date`, `Shipping_address` |
+| 7 | **Order_Info** | Line items inside an order (junction of Order × Product) | `Order_Product_Id` (PK), `Order_Id` (FK), `Product_Id` (FK), `Quantity`, `Total_price` |
+| 8 | **Payment** | How money changes hands | `Payment_Id` (PK), `Order_Id` (FK), `Customer_Id` (FK), `Payment_date`, `Payment_mode`, `Payment_amount` |
+| 9 | **Shipment** | Parcel tracking & final-mile delivery | `Shipment_Id` (PK), `Order_Id` (FK), `Shipment_date`, `Tracking_number` |
 
----
-
-## 🛠 How to Recreate the Project in DBeaver
-
-If someone wants to recreate this project, they can follow these steps:
-
-1. **Install DBeaver**  
-   Download and install from [https://dbeaver.io/](https://dbeaver.io/)
-
-2. **Connect to a Local Database**  
-   (MySQL, PostgreSQL, SQLite, etc. — choose one during setup)
-
-3. **Manually Create Tables**  
-   Use DBeaver's **ER Diagram view** or SQL Editor to manually create the 9 tables listed above.
-
-4. **Define Relationships**  
-   Add foreign key constraints (e.g., Orders → Products, Payments → OrderInfo, etc.) via the UI.
-
-5. **Populate Sample Data**  
-   Add dummy data using DBeaver's spreadsheet-like data editor to simulate transactions.
-
-6. **Visualize ERD**  
-   Use DBeaver's **ERD tool** to generate a visual entity-relationship diagram automatically.
+\* Only the most instructive columns are shown here; see the ERD for full details.  
+† `Payment_Id` in **Customer** supports a one-to-one “default payment method” if desired.
 
 ---
 
-## 💡 Features
+## 🔄 Data Flow in Plain English
 
-- Designed with a normalized schema to avoid redundancy
-- End-to-end data flow from supply to delivery
-- Ideal for SQL practice, analytics projects, or inventory simulations
-- Platform-independent — can be recreated on any SQL-based system
-
----
-
-## 🔮 Possible Extensions
-
-- Add user roles (admin, customer, supplier)
-- Integrate with analytics platforms (Tableau, Power BI)
-- Add triggers for inventory depletion or auto restocking
-- Build a simple front-end for order placement and tracking
+1. **Suppliers** list products → **Product** table.  
+2. Products are stocked in **Warehouses**; movements are logged in **Inventory**.  
+3. A **Customer** places an **Order**.  
+4. Each shoe in that cart becomes a row in **Order_Info**.  
+5. The customer pays; a matching record is written to **Payment**.  
+6. The warehouse ships; tracking data lands in **Shipment**.  
+7. Inventory updates, and the cycle repeats.
 
 ---
 
-## 📌 Final Note
+## 🚀 Re-Creating the Project Yourself
 
-This project was created manually using **DBeaver** without code or automation. It's ideal for learners or developers who want to understand the logic and structure of a real-world sales database through hands-on modeling.
+| Step | What to Do | Tips |
+|------|------------|------|
+| 1 | **Install software** | *DBeaver* Community Edition + any SQL engine you like (MySQL, Postgres, SQLite…) |
+| 2 | **Study the ERD** | Open the PNG/diagram to grasp keys & cardinalities. |
+| 3 | **Create the 9 tables** | Use DBeaver’s Table Editor or run SQL DDL of your own. |
+| 4 | **Add the foreign-key constraints** | Follow the lines/arrows in the diagram exactly. |
+| 5 | **Populate sample data** | DBeaver’s spreadsheet view makes manual entry painless; import CSVs if you prefer. |
+| 6 | **Generate your own ERD** | In DBeaver: *Database* → *ER Diagram* → it auto-draws from your schema. Confirm it mirrors the Lucidchart version. |
+| 7 | **Run test queries** | Example: *“Top-selling models by revenue”* or *“Days between order and delivery”*. |
 
 ---
 
-## 🙋‍♂️ Author
+## 💡 Why This Design Works
 
-**Your Name**  
-📧 your.email@example.com  
-📍 Based in [City, Country]  
+* **Normalized** – minimal redundancy, easy maintenance.  
+* **Extensible** – add promotions, returns, or user roles without major rewrites.  
+* **Realistic** – mirrors how e-commerce platforms join orders, payments, and shipments.  
 
 ---
 
+## Possible Next Steps
+
+- Seed realistic sample data and publish analytics dashboards (Tableau / Power BI).  
+- Add triggers for auto-restock when **Inventory** drops below threshold.  
+- Integrate carrier APIs for real-time **Shipment** status updates.  
+
+---
+
+## 📄 License
+
+[MIT](LICENSE)
+
+---
+
+## Author
+
+**Lohit Satya Sai Chollangi** • lohithsatyasai@gmail.com • Built with Lucidchart + DBeaver 🛠️
