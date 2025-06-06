@@ -13,6 +13,8 @@ This file contains analytical reports developed for the Nike Shoe Sales Database
 - Count orders and sum revenue (price × quantity).
 - Group by customer.
 
+![Top-Spending Customers](images/Screenshot%202025-06-05%20222650.png)
+
 **Insight**: Helps understand your most loyal and profitable customers.
 
 ---
@@ -25,6 +27,8 @@ This file contains analytical reports developed for the Nike Shoe Sales Database
 - Join Product and Order_Info.
 - Group by product category.
 - Sum quantity and revenue.
+
+![Best-Selling Product Categories](images/Screenshot%202025-06-05%20222721.png)
 
 **Insight**: Guides inventory and marketing focus by top-performing categories.
 
@@ -39,6 +43,8 @@ This file contains analytical reports developed for the Nike Shoe Sales Database
 - Group by supplier name.
 - Aggregate sales revenue (price × quantity).
 
+![Revenue by Supplier](images/Screenshot%202025-06-05%20222734.png)
+
 **Insight**: Helps assess supplier impact and negotiate better deals.
 
 ---
@@ -52,6 +58,8 @@ This file contains analytical reports developed for the Nike Shoe Sales Database
 - Sum available quantities.
 - Return “Not in Stock” for items with no inventory.
 
+![Current Stock Levels](images/Screenshot%202025-06-05%20222746.png)
+
 **Insight**: Critical for supply chain, restocking, and avoiding out-of-stock issues.
 
 ---
@@ -63,6 +71,8 @@ This file contains analytical reports developed for the Nike Shoe Sales Database
 **Query Logic**:
 - Join Customer, Order, Order_Info, and Product.
 - Display customer name, product, order date, quantity, and total spent.
+
+![Full Customer Order History](images/Screenshot%202025-06-05%20222758.png)
 
 **Insight**: Useful for customer service, personalization, and loyalty campaigns.
 
